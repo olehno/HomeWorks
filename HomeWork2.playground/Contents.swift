@@ -11,7 +11,8 @@ import UIKit
 var firstVariable: Float = 3.14
 var secondVariable: Float = 42.0
 var sumVariable: Double = Double(firstVariable) + Double(secondVariable)
-print("Result is: \(sumVariable)")
+let formated = String(format: "%.2f", sumVariable)
+print("Result is: \(formated)")
 
 
 /*
@@ -41,26 +42,21 @@ print("When dividing \(numberOne) by \(numberTwo), the result is \(dividingResul
  print("new: \(qty) MacBook Pro with the price of: \(price) EUR, will cost you: \(totalSum) Eur")
  */
 
-func printBill (qty: Int, price: Int, totalSum: Int) {
-    print("new: \(qty) MacBook Pro with the price of: \(price) EUR, will cost you: \(totalSum) Eur")
-}
-
 let qty: Int = 5
 var price: Int = 1000
 var totalSum: Int
 
 if qty < 5 {
     totalSum = qty * price
-    printBill(qty: qty, price: price, totalSum: totalSum)
 } else if qty >= 5 && qty < 10 {
     price = price - 100
     totalSum = qty * price
-    printBill(qty: qty, price: price, totalSum: totalSum)
 } else {
     price = price - 150
     totalSum = qty * price
-    printBill(qty: qty, price: price, totalSum: totalSum)
 }
+
+print("new: \(qty) MacBook Pro with the price of: \(price) EUR, will cost you: \(totalSum) Eur")
 
 /*
  Ex4:
@@ -83,13 +79,19 @@ if let string = userInputAge, let age = Int(string) {
 
 let dateFormatter = DateFormatter()
 dateFormatter.dateFormat = "MM/dd/yyyy"
-let birthDay = dateFormatter.date(from: "1/17/1998")
+let birthDay = dateFormatter.date(from: "1/17/1998") ?? Date()
 let currentDay = Date()
 let calendar = Calendar.current
-let totalDaysFromBirth = calendar.dateComponents([.day], from: birthDay!, to: currentDay).day
-let totalMonthFromBirth = calendar.dateComponents([.month], from: birthDay!, to: currentDay).month
-let totalYearsFromBirth = calendar.dateComponents([.year], from: birthDay!, to: currentDay).year
-print("Total years: \(totalYearsFromBirth!), total months: \(totalMonthFromBirth!), total days: \(totalDaysFromBirth!) have passed")
+let totalDaysFromBirth = calendar.dateComponents([.day], from: birthDay, to: currentDay).day
+let totalMonthFromBirth = calendar.dateComponents([.month], from: birthDay, to: currentDay).month
+let totalYearsFromBirth = calendar.dateComponents([.year], from: birthDay, to: currentDay).year
+
+if totalDaysFromBirth != 0 || totalMonthFromBirth != 0 || totalYearsFromBirth != 0 {
+    print("Total years: \(totalYearsFromBirth!), total months: \(totalMonthFromBirth!), total days: \(totalDaysFromBirth!) have passed")
+} else {
+    print("Wrong input!")
+}
+
 
 /*
  Ex6:
@@ -97,17 +99,20 @@ print("Total years: \(totalYearsFromBirth!), total months: \(totalMonthFromBirth
  Use switch case to print("I was born in the ... quarter")
  */
 
-let monthOfBirth = 1
-
-switch monthOfBirth {
-case 1...3:
-    print("I was born in the first quarter")
-case 4...6:
-    print("I was born in the second quarter")
-case 7...9:
-    print("I was born in the third quarter")
-case 10...12:
-    print("I was born in the fourth quarter")
-default:
-    print("Error")
+if let monthOfBirth = calendar.dateComponents([.month], from: birthDay).month {
+    switch monthOfBirth {
+    case 1...3:
+        print("I was born in the first quarter")
+    case 4...6:
+        print("I was born in the second quarter")
+    case 7...9:
+        print("I was born in the third quarter")
+    case 10...12:
+        print("I was born in the fourth quarter")
+    default:
+        print("Error")
+    }
 }
+
+
+
